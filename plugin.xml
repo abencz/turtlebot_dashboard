@@ -1,0 +1,11 @@
+<library path="src">
+  <class name="TurtlebotDashboard" type="turtlebot_dashboard.dashboard.TurtlebotDashboard" base_class_type="rqt_gui_py::Plugin">
+    <description>
+    Dashboard for the turtlebot.
+    </description>
+    <qtgui>
+      <label>Turtlebot Dashboard</label>
+      <statustip>Test robot_dashboard.</statustip>
+    </qtgui>
+  </class>
+</library>
