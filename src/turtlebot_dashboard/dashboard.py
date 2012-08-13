@@ -6,8 +6,10 @@ import turtlebot_node.srv
 import turtlebot_node.msg
 
 from robot_dashboard.dashboard import Dashboard
-from robot_dashboard.widgets import MonitorDashWidget, ConsoleDashWidget, MenuDashWidget, ButtonDashWidget
+from robot_dashboard.widgets import MonitorDashWidget, ConsoleDashWidget, MenuDashWidget, ButtonDashWidget, BatteryDashWidget
 from QtGui import QMessageBox, QAction
+
+from .battery import TurtlebotBattery
 
 class TurtlebotDashboard(Dashboard):
     def setup(self, context):
@@ -36,9 +38,13 @@ class TurtlebotDashboard(Dashboard):
                          ButtonDashWidget(self.context, 'breaker1', lambda: self.toggle_breaker(1) , 'bolt.svg', self.states),
                          ButtonDashWidget(self.context, 'breaker2', lambda: self.toggle_breaker(2) , 'bolt.svg', self.states)]
 
-        return {'1':[MonitorDashWidget(self.context), 
-                     ConsoleDashWidget(self.context), 
-                     self.mode], '2':self.breakers}
+        self.create_bat = TurtlebotBattery(self.context)
+        self.lap_bat = TurtlebotBattery(self.context)
+        self.batteries = [self.create_bat, self.lap_bat]
+
+        return [[MonitorDashWidget(self.context), ConsoleDashWidget(self.context), self.mode],
+                self.breakers,
+                self.batteries]
 
     def dashboard_callback(self, msg):
         self._dashboard_message = msg
@@ -62,10 +68,11 @@ class TurtlebotDashboard(Dashboard):
                 for value in status.values:
                     breaker_status[value.key]=value.value
   
-        #if (battery_status):
-        #  self._power_state_ctrl.set_power_state(battery_status)
-        #else:
-        #  self._power_state_ctrl.set_stale()
+        if (battery_status):
+          self.create_bat.set_power_state(battery_status)
+        else:
+          #self._power_state_ctrl.set_stale()
+          print("Power State Stale")
   
         #if (laptop_battery_status):
         #  self._power_state_ctrl_laptop.set_power_state(laptop_battery_status)
