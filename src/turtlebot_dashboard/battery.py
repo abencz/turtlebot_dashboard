@@ -17,11 +17,10 @@ class TurtlebotBattery(BatteryDashWidget):
         self._cap = 2.7
         self._char_cap =2.7
         self._time_remaining = 0.0
-        self._plugged_in = False
 
     def set_power_state(self, msg):
         last_pct = self._pct
-        last_plugged_in = self._plugged_in
+        last_plugged_in = self.charging
         last_time_remaining = self._time_remaining
         self._char_cap = 0.8*self._char_cap +0.2*float(msg['Charge (Ah)'])
         #make sure that battery percentage is not greater than 100%
@@ -42,11 +41,10 @@ class TurtlebotBattery(BatteryDashWidget):
         self._pct = float(msg['Charge (Ah)'])/self._cap
     
         if self._pct == 1 and float(msg['Current (A)']) == 0:
-            self._plugged_in = True
+            self.charging = True
         else:
-            self._plugged_in = (float(msg['Current (A)'])>0)
+            self.charging = (float(msg['Current (A)'])>0)
 
         self.update_perc(self._pct*100)
         self.update_time(self._time_remaining)
-        self.update_plug(self._plugged_in)
 

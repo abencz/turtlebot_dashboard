@@ -6,10 +6,32 @@ import turtlebot_node.srv
 import turtlebot_node.msg
 
 from robot_dashboard.dashboard import Dashboard
-from robot_dashboard.widgets import MonitorDashWidget, ConsoleDashWidget, MenuDashWidget, ButtonDashWidget, BatteryDashWidget
+from robot_dashboard.util import make_icon
+from robot_dashboard.widgets import MonitorDashWidget, ConsoleDashWidget, MenuDashWidget, BatteryDashWidget, IconToolButton
 from QtGui import QMessageBox, QAction
 
 from .battery import TurtlebotBattery
+
+import rospkg
+import os.path
+
+rp = rospkg.RosPack()
+
+image_path = image_path = os.path.join(rp.get_path('turtlebot_dashboard'), 'images')
+
+class BreakerButton(IconToolButton):
+    def __init__(self, name, onclick):
+        super(BreakerButton, self).__init__(name)
+
+        self.clicked.connect(onclick)
+
+        self._on_icon = self.load_image(os.path.join(image_path, 'breaker-on.png'))
+        self._off_icon = self.load_image(os.path.join(image_path, 'breaker-off.png'))
+        self._on_click = self.load_image(os.path.join(image_path, 'breaker-on-click.png'))
+        self._off_click = self.load_image(os.path.join(image_path, 'breaker-off-click.png'))
+    
+        self._icons = [make_icon(self._off_icon), make_icon(self._on_icon), make_icon(self._off_icon)]
+        self._clicked_icons = [make_icon(self._off_click), make_icon(self._on_click), make_icon(self._off_click)]
 
 class TurtlebotDashboard(Dashboard):
     def setup(self, context):
@@ -25,18 +47,15 @@ class TurtlebotDashboard(Dashboard):
         self._power_control = rospy.ServiceProxy('turtlebot_node/set_digital_outputs', turtlebot_node.srv.SetDigitalOutputs)
 
     def get_widgets(self):
-        self.mode = MenuDashWidget(self.context, 'Mode', icon = 'cog.svg')
+        self.mode = MenuDashWidget(self.context, 'Mode')
 
         self.mode.add_action('Full', self.on_full_mode)
         self.mode.add_action('Passive', self.on_passive_mode)
         self.mode.add_action('Safe', self.on_safe_mode)
 
-        self.states = ["QPushButton {background-color: red}",
-                       "QPushButton {background-color: green}"]
-        
-        self.breakers = [ButtonDashWidget(self.context, 'breaker0', lambda: self.toggle_breaker(0) , 'bolt.svg', self.states), 
-                         ButtonDashWidget(self.context, 'breaker1', lambda: self.toggle_breaker(1) , 'bolt.svg', self.states),
-                         ButtonDashWidget(self.context, 'breaker2', lambda: self.toggle_breaker(2) , 'bolt.svg', self.states)]
+        self.breakers = [BreakerButton('breaker0', lambda: self.toggle_breaker(0)), 
+                         BreakerButton('breaker1', lambda: self.toggle_breaker(1)),
+                         BreakerButton('breaker2', lambda: self.toggle_breaker(2))]
 
         self.create_bat = TurtlebotBattery(self.context)
         self.lap_bat = TurtlebotBattery(self.context)
@@ -74,10 +93,11 @@ class TurtlebotDashboard(Dashboard):
           #self._power_state_ctrl.set_stale()
           print("Power State Stale")
   
-        #if (laptop_battery_status):
-        #  self._power_state_ctrl_laptop.set_power_state(laptop_battery_status)
-        #else:
-        #  self._power_state_ctrl_laptop.set_stale()
+        if (laptop_battery_status):
+          self.lap_bat.set_power_state(laptop_battery_status)
+        else:
+          #self._power_state_ctrl_laptop.set_stale()
+          print("Laptop battery stale")
         
         if (breaker_status):
             self._raw_byte = int(breaker_status['Raw Byte'])
