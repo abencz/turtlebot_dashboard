@@ -7,7 +7,7 @@ import turtlebot_node.msg
 
 from robot_dashboard.dashboard import Dashboard
 from robot_dashboard.util import make_icon
-from robot_dashboard.widgets import MonitorDashWidget, ConsoleDashWidget, MenuDashWidget, BatteryDashWidget, IconToolButton
+from robot_dashboard.widgets import MonitorDashWidget, ConsoleDashWidget, MenuDashWidget, BatteryDashWidget, IconToolButton, NavViewDashWidget
 from QtGui import QMessageBox, QAction
 
 from .battery import TurtlebotBattery
@@ -63,7 +63,8 @@ class TurtlebotDashboard(Dashboard):
 
         return [[MonitorDashWidget(self.context), ConsoleDashWidget(self.context), self.mode],
                 self.breakers,
-                self.batteries]
+                self.batteries,
+                [NavViewDashWidget(self.context)]]
 
     def dashboard_callback(self, msg):
         self._dashboard_message = msg
