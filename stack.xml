@@ -9,5 +9,5 @@
   <url>http://ros.org/wiki/turtlebot_dashboard</url>
   <build_depends>catkin</build_depends>
 
-  <depends>robot_dashboard<depends>
+  <depends>robot_dashboard</depends>
 </stack>
