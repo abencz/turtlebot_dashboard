@@ -1,7 +1,7 @@
 import roslib;roslib.load_manifest('turtlebot_dashboard')
 import rospy
 
-from robot_dashboard.widgets import BatteryDashWidget
+from rqt_robot_dashboard.widgets import BatteryDashWidget
 
 def non_zero(value): 
    if value < 0.00001 and value > -0.00001: 
@@ -10,7 +10,7 @@ def non_zero(value):
 
 class TurtlebotBattery(BatteryDashWidget):
     def __init__(self, context, name='battery'):
-        super(TurtlebotBattery, self).__init__(context, name)
+        super(TurtlebotBattery, self).__init__(name)
 
         self._power_consumption = 0.0
         self._pct = 0.0
