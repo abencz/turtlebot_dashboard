@@ -56,8 +56,8 @@ class TurtlebotDashboard(Dashboard):
                          BreakerButton('breaker1', lambda: self.toggle_breaker(1)),
                          BreakerButton('breaker2', lambda: self.toggle_breaker(2))]
 
-        self.create_bat = TurtlebotBattery(self.context)
-        self.lap_bat = TurtlebotBattery(self.context)
+        self.create_bat = TurtlebotBattery('create_bat')
+        self.lap_bat = TurtlebotBattery('laptop_bat')
         self.batteries = [self.create_bat, self.lap_bat]
 
         return [[MonitorDashWidget(self.context), ConsoleDashWidget(self.context), self.mode],

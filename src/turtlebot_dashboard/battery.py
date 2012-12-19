@@ -9,7 +9,7 @@ def non_zero(value):
    return value
 
 class TurtlebotBattery(BatteryDashWidget):
-    def __init__(self, context, name='battery'):
+    def __init__(self, name='battery'):
         super(TurtlebotBattery, self).__init__(name)
 
         self._power_consumption = 0.0
@@ -20,7 +20,7 @@ class TurtlebotBattery(BatteryDashWidget):
 
     def set_power_state(self, msg):
         last_pct = self._pct
-        last_plugged_in = self.charging
+        last_plugged_in = self._charging
         last_time_remaining = self._time_remaining
         self._char_cap = 0.8*self._char_cap +0.2*float(msg['Charge (Ah)'])
         #make sure that battery percentage is not greater than 100%
@@ -41,10 +41,10 @@ class TurtlebotBattery(BatteryDashWidget):
         self._pct = float(msg['Charge (Ah)'])/self._cap
     
         if self._pct == 1 and float(msg['Current (A)']) == 0:
-            self.charging = True
+            self._charging = True
         else:
-            self.charging = (float(msg['Current (A)'])>0)
-
+            self._charging = (float(msg['Current (A)'])>0)
+            
         self.update_perc(self._pct*100)
-        self.update_time(self._time_remaining)
+        self.update_time(self._pct*100)
 
