@@ -26,7 +26,7 @@ class BreakerButton(IconToolButton):
     
         icons = [self._on_icon, self._off_icon]
 
-        super(BreakerButton, self).__init__(name, icons=icons, icon_paths=[['turtlebot_dashboard', 'images']])
+        super(BreakerButton, self).__init__(name, icons=icons)
 
         self.setFixedSize(self._icons[0].actualSize(QSize(50,30)))
 
