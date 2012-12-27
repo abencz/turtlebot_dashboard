@@ -1,16 +1,4 @@
 <stack>
-  <name>turtlebot_dashboard</name>
-  <version>0.1.0</version>
-  <description>Turtlebot dashboard.</description>
-  <author email="zklapow@willowgarage.com">Ze'ev Klapow</author>
-  <license>BSD</license>
-  <copyright>Willow Garage</copyright>
-
-  <url>http://ros.org/wiki/turtlebot_dashboard</url>
-  <build_depends>catkin</build_depends>
-
-  <depends>robot_dashboard</depends>
-<stack>
   <description brief="turtlebot_dashboard">
       turtlebot_dashboard is a GUI for debugging and controlling low-level state of a turtlebot.  It shows things like battery status and breaker states, as well as integrating tools like rqt_console and robot_monitor.
   </description>
