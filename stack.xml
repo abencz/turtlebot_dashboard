@@ -10,4 +10,20 @@
   <build_depends>catkin</build_depends>
 
   <depends>robot_dashboard</depends>
+<stack>
+  <description brief="turtlebot_dashboard">
+      turtlebot_dashboard is a GUI for debugging and controlling low-level state of a turtlebot.  It shows things like battery status and breaker states, as well as integrating tools like rqt_console and robot_monitor.
+  </description>
+  <author>Ze'ev Klapow</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/turtlebot_dashboard</url>
+
+  <depend stack="common_msgs"/> <!-- diagnostic_msgs -->
+  <depend stack="turtlebot_create"/> <!-- create_driver -->
+  <depend stack="ros"/> <!-- roslib -->
+  <depend stack="ros_comm"/> <!-- rospy, std_srvs -->
+  <depend stack="rqt"/> <!-- rqt_gui -->
+  <depend stack="rqt_robot_plugins"/> <!-- rqt_robot_dashboard -->
+  <depend stack="std_msgs"/> <!-- std_msgs -->
 </stack>
