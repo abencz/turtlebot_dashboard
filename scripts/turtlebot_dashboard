@@ -1,1 +1,1 @@
-rosrun rqt_gui rqt -s turtlebot_dashboard
+rosrun rqt_gui rqt_gui -s turtlebot_dashboard
